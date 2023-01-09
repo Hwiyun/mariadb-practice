@@ -20,7 +20,7 @@ select round(1.498), round(1.511), round(1.498, 1), round(1.498, 0);
 select power(2, 10), pow(2, 10) from dual;
 
 -- sign(x): 양수 1, 음수 -1, 0
-select sign(20), sign(-100), sing(0) from dual;
+select sign(20), sign(-100), sign(0) from dual;
 
 -- greatest(x, y, ...), least(x, y, ....)
 select greatest(10, 40, 20, 50), least(10, 40, 20, 50) from dual;
