@@ -95,5 +95,3 @@ order by salary desc;
   select emp_no, salary, from_date, to_date
     from salaries
 order by emp_no asc, salary desc;
-  
--- 예제5: 
