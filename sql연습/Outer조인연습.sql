@@ -21,6 +21,6 @@ select a.name, b.name
 select a.name as '사원', ifnull(b.name, '없음') as '부서'
   from emp a left join dept b on a.dept_no = b.no;
 
--- rigth join
+-- right join
 select ifnull(a.name, '없음') as '사원', b.name as '부서'
   from emp a right join dept b on a.dept_no = b.no;
