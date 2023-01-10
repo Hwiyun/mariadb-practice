@@ -39,12 +39,12 @@ from departments;
 
 -- 문제6.
 -- 현재 부서 매니저는 몇 명이나 있나요?(역임 매너저는 제외)
-select count(distinct(emp_no))
+select count(distinct(emp_no)) as '부서 매니저 수'
 from dept_manager;
 
 -- 문제7.
 -- 전체 부서를 출력하려고 합니다. 순서는 부서이름이 긴 순서대로 출력해 보세요.
-select dept_name
+select dept_name as '전체 부서'
 from departments
 order by length(dept_name) desc;
 
