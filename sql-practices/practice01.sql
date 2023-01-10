@@ -74,5 +74,3 @@ select emp_no, from_date, to_date
 from titles
 where emp_no = 13250
 order by from_date asc;
-
-
