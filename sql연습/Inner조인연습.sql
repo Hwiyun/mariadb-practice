@@ -26,7 +26,7 @@ select a.first_name, b.title
  where b.to_date = '9999-01-01';
   
 -- 2) join ~ using
---    ntural join의 문제점
+--    natural join의 문제점
 select count(*)
   from salaries a natural join titles b 
  where a.to_date = '9999-01-01'
