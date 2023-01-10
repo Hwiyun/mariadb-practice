@@ -36,13 +36,13 @@ select * from member;
 -- update
 update member
 	set email = 'kickscar3@naver.com', password=password('5678')
- where no = 2;
+ where no = 1;
  select * from member;
  
 -- delete
 delete
   from member
- where no = 3;
+ where no = 2;
 select * from member;
 
 -- transaction
