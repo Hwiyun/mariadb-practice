@@ -2,24 +2,19 @@ package test;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.sql.Statement;
 
-public class UpdateTest {
+public class InsertTest02 {
 
 	public static void main(String[] args) {
-		DeptVo vo = new DeptVo();
-		vo.setNo(1L);
-		vo.setName("경영지원");
-		
-		Boolean result = update(vo);
-		System.out.println(result ? "성공" : "실패");
+		insert("기획2");
 	}
 
-	private static Boolean update(DeptVo vo) {
+	private static boolean insert(String deptName) {
 		boolean result = false;
 		Connection conn = null;
-		Statement stmt = null;
+		PreparedStatement pstmt = null;
 		
 		try {
 			//1. JDBC Driver Class 로딩
@@ -29,15 +24,18 @@ public class UpdateTest {
 			String url = "jdbc:mariadb://192.168.10.110:3307/webdb?charset=utf8";
 			conn = DriverManager.getConnection(url, "webdb", "webdb");
 			
-			//3. Statement 생성
-			stmt = conn.createStatement();
-			
-			//4. SQL 실행
+			//3. Statement 준비
 			String sql =
-				"update dept" + 
-				"   set name = '" + vo.getName() + "'" + 
-				" where no = " + vo.getNo();
-			int count = stmt.executeUpdate(sql);
+					" insert" +
+					"   into dept" +
+					" values (null, ?)";
+			pstmt = conn.prepareStatement(sql);
+			
+			//4. binding
+			pstmt.setString(1, deptName);
+			
+			//5. SQL 실행
+			int count = pstmt.executeUpdate();
 			
 			//5. 결과처리
 			result = count == 1;
@@ -48,8 +46,8 @@ public class UpdateTest {
 			System.out.println("error:" + e);
 		} finally {
 			try {
-				if(stmt != null) {
-					stmt.close();
+				if(pstmt != null) {
+					pstmt.close();
 				}
 				
 				if(conn != null) {
@@ -60,6 +58,6 @@ public class UpdateTest {
 			}
 		}
 		
-		return result;			
+		return result;
 	}
 }
