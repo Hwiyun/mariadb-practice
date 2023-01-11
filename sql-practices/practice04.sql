@@ -3,11 +3,20 @@
 -- 문제1.
 -- 현재 평균 급여보다 많은 급여을 받는 직원은 몇 명이나 있습니까?
 
+select avg(s.salary) from salaries s;
+
+select count(s.salary)
+from salaries s
+where (select avg(s.salary) from salaries s) < s.salary
+  and to_date = '9999-01-01';
+
 -- 문제2. (X)
 -- 현재, 각 부서별로 최고의 급여를 받는 사원의 사번, 이름, 부서 연봉을 조회하세요. 단 조회결과는 급여의 내림차순으로 정렬되어 나타나야 합니다. 
 
 -- 문제3.
 -- 현재, 자신의 부서 평균 급여보다 급여(salary)가 많은 사원의 사번, 이름과 급여을 조회하세요 
+
+
 
 -- 문제4.
 -- 현재, 사원들의 사번, 이름, 매니저 이름, 부서 이름으로 출력해 보세요.
