@@ -117,3 +117,92 @@ select t.title, avg(s.salary) as avg_salary
 group by t.title
 order by avg_salary asc
    limit 0, 1;
+   
+-- 3-2) 복수행 연산자: in, not in, 비교연산자any, 비교연산자all
+
+-- any 사용법
+-- 1. =any : in
+-- 2. >any, >=any: 최소값
+-- 3. <any, <=any: 최대값
+-- 4. <>any, !=any: not in
+
+-- all 사용법
+-- 1. =all (x)
+-- 2. >all, >=all: 최대값
+-- 3. <all, <=all: 최소값
+-- 4. <>all, !=all
+
+-- 실습문제3
+-- 현재 급여가 50000 이상인 직원의 이름과 급여를 출력하세요.
+-- 둘리 60000
+-- 또치 80000
+
+-- sol1: join
+select e.first_name, s.salary
+  from employees e, salaries s
+ where e.emp_no = s.emp_no
+   and s.to_date = '9999-01-01'
+   and s.salary > 50000
+order by s.salary asc;
+
+-- sol2: subquery
+select emp_no, salary
+  from salaries
+ where to_date = '9999-01-01'
+   and salary > 50000;
+   
+select e.first_name, s.salary
+  from employees e, salaries s
+ where e.emp_no = s.emp_no
+   and s.to_date = '9999-01-01'
+   and (e.emp_no, s.salary) =any (select emp_no, salary
+								from salaries
+								where to_date = '9999-01-01'
+								and salary > 50000)
+order by s.salary asc;
+
+-- 실습문제4: 현재, 각 부서별로 최고 급여를 받고 있는 직원의 이름과 급여를 출력하세요.
+-- 총무 둗리 4000
+-- 영업 또치 5000
+
+select d.dept_no, max(s.salary)
+  from dept_emp d, salaries s
+ where d.emp_no = s.emp_no
+   and d.to_date = '9999-01-01'
+   and s.to_date = '9999-01-01'
+group by d.dept_no;   
+   
+-- sol1: where절 subquery(in)
+select ds.dept_name, e.first_name, s.salary
+  from departments ds, dept_emp d, employees e, salaries s
+ where d.dept_no = ds.dept_no
+   and d.emp_no = e.emp_no
+   and e.emp_no = s.emp_no
+   and d.to_date = '9999-01-01'
+   and s.to_date = '9999-01-01'
+   and (ds.dept_no, s.salary) in (select d.dept_no, max(s.salary)
+									from dept_emp d, salaries s
+									where d.emp_no = s.emp_no
+									and d.to_date = '9999-01-01'
+									and s.to_date = '9999-01-01'
+								group by d.dept_no);
+
+-- sol2: from절 subquery & join
+  select a.dept_name, c.first_name, d.salary
+   from departments a,
+        dept_emp b,
+        employees c,
+        salaries d,
+        (  select a.dept_no, max(b.salary) as max_salary
+			 from dept_emp a, salaries b
+			where a.emp_no = b.emp_no
+              and a.to_date = '9999-01-01'
+              and b.to_date = '9999-01-01'
+         group by a.dept_no) e
+  where a.dept_no = b.dept_no
+    and b.emp_no = c.emp_no
+    and c.emp_no = d.emp_no
+    and a.dept_no = e.dept_no
+    and b.to_date = '9999-01-01'
+    and d.to_date = '9999-01-01'
+    and d.salary = e.max_salary;
