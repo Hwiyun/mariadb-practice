@@ -168,7 +168,17 @@ order by s.salary desc;
 --   and de.to_date = '9999-01-01'
 -- order by s.salary asc;
 
-
+select de.dept_no as dept_no, avg(s.salary) as avg_salary
+from salaries s
+join dept_emp de on de.emp_no = s.emp_no
+group by de.dept_no
+having avg_salary = (
+	select max(z.avg_salary)
+	from (
+		select de.dept_no as dept_no, avg(s.salary) as avg_salary
+		from salaries s
+		join dept_emp de on de.emp_no = s.emp_no
+		group by de.dept_no) z);
 
 -- 문제6.
 -- 평균 급여가 가장 높은 부서는? 
