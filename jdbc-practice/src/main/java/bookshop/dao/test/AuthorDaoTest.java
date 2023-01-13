@@ -8,7 +8,7 @@ import bookshop.vo.AuthorVo;
 public class AuthorDaoTest {
 
 	public static void main(String[] args) {
-		 testInsert();
+		testInsert();
 		testFindAll();
 	}
 

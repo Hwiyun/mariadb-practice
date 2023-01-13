@@ -4,6 +4,8 @@ public class BookVo {
 	private long no;
 	private String title;
 	private String rent;
+	private long authorNo;
+	
 	public String getAuthorName() {
 		return authorName;
 	}
@@ -13,7 +15,6 @@ public class BookVo {
 	public String getRent() {
 		return rent;
 	}
-	private long authorNo;
 	private String authorName;
 	
 	public long getNo() {
